@@ -1,5 +1,5 @@
 {
-    "name": "braceyourself/cvent-php",
+    "name": "braceyourself/php-cvent-wrapper",
     "description": "Updated Cvent soap api client for php",
     "type": "library",
     "license": "MIT",
