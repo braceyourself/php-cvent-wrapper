@@ -1,18 +1,22 @@
 {
-    "name": "matthewpoer/php-cvent-wrapper",
-    "description": "A PHP wrapper for some common Cvent SOAP API functions",
-    "version": "1.0",
-    "require": {
-        "php": ">5.6",
-        "ext-soap": "*"
-    },
+    "name": "braceyourself/cvent-php",
+    "description": "Updated Cvent soap api client for php",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Matthew Poer",
-            "email": "matthewpoer@gmail.com"
+            "name": "Ethan Brace",
+            "email": "ethanabrace@gmail.com"
         }
     ],
     "autoload": {
-        "files": ["php-cvent-wrapper.php"]
+        "psr-4": {
+            "Braceyourself\\Cvent\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "ext-soap": "*",
+        "illuminate/support": "^9.0@dev"
     }
 }
