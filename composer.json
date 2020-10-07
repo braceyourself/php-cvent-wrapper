@@ -17,6 +17,6 @@
     "minimum-stability": "dev",
     "require": {
         "ext-soap": "*",
-        "illuminate/support": "^9.0@dev"
+        "illuminate/support": "^8.0"
     }
 }
