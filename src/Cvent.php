@@ -42,6 +42,10 @@ class Cvent
             return $this->client->__soapCall($method, $params);
 
         } catch (\SoapFault $fault) {
+            /** @var \Exception $exception */
+            $exception = \Str::of($fault->getMessage())->lower()->studly()->ucfirst()
+                ->prepend(__NAMESPACE__ . "\Exceptions\\")
+                ->append('Exception');
 
             $message = 'Error with Cvent API. Exception occurred.' . PHP_EOL;
             $message .= 'faultcode: ' . $fault->faultcode . PHP_EOL;
@@ -53,6 +57,10 @@ class Cvent
             if ($this->client) {
                 $message .= 'Sent Headers: ' . PHP_EOL . $this->client->__getLastRequestHeaders();
                 $message .= 'Sent Request: ' . PHP_EOL . $this->client->__getLastRequest();
+            }
+
+            if (class_exists($exception)) {
+                throw new $exception($message, $fault->getCode(), $fault);
             }
 
 
