@@ -19,9 +19,11 @@ class Cvent
         'trace'      => TRUE,
     ];
     public static array $objects = [
-        'Contact',
+        'Guest',
         'Event',
         'Survey',
+        'Contact',
+        'Session',
         'eMarketing',
         'Administration',
     ];
