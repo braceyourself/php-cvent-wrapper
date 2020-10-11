@@ -1,6 +1,6 @@
 <?php namespace Braceyourself\Cvent\Exceptions;
 
-class TooManyResultsException
+class TooManyResultsException extends \Exception
 {
 
 }
