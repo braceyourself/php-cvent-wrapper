@@ -2,12 +2,29 @@
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 
 class Filter implements Arrayable
 {
     private $column;
     private $operator;
     private $value;
+    /**
+     * @var string[]
+     */
+    private array $operators = [
+        'Equals',
+        'Not Equal to',
+        'Less than',
+        'Greater than',
+        'Less than or Equal to',
+        'Greater than or Equal to',
+        'Contains',
+        'Does not Contain',
+        'Starts with',
+        'Includes',
+        'Excludes'
+    ];
 
     /**
      * Filter constructor.
@@ -30,9 +47,9 @@ class Filter implements Arrayable
     public function toArray()
     {
         return [
-            'Field'    => $this->column,
-            'Operator' => $this->getOperator(),
-            'Value'    => $this->getValue(),
+            'Field'              => $this->column,
+            'Operator'           => $this->getOperator(),
+            $this->getValueKey() => $this->getValue(),
         ];
     }
 
@@ -42,7 +59,19 @@ class Filter implements Arrayable
      */
     private function getOperator(): string
     {
+        if (in_array($this->operator, $this->operators)) {
+            return $this->operator;
+        }
+
         switch (strtolower($this->operator)) {
+            case '!=':
+                return 'Not Equal to';
+            case '<=':
+                return 'Less than or Equal to';
+            case '>=':
+                return 'Greater than or Equal to';
+            case 'starts with':
+                return 'Starts with';
             case '>':
             case 'greater than':
             case 'greater':
@@ -57,6 +86,11 @@ class Filter implements Arrayable
             case 'equal':
             case 'equals':
                 return 'Equals';
+            case 'in':
+            case 'includes':
+                return 'Includes';
+            case 'excludes':
+                return 'Excludes';
             default:
                 throw new \Exception("Invalid operator value");
         }
@@ -72,5 +106,10 @@ class Filter implements Arrayable
         }
 
         return $this->value;
+    }
+
+    private function getValueKey()
+    {
+        return (gettype($this->getValue()) === 'array') ? 'ValueArray' : 'Value';
     }
 }
