@@ -1,5 +1,7 @@
 <?php namespace Braceyourself\Cvent;
 
+use Braceyourself\Cvent\Exceptions\CventAuthorizationFailureException;
+use Braceyourself\Cvent\Exceptions\CventAuthorizationLockoutException;
 use Illuminate\Support\Arr;
 
 class Cvent
