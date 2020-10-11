@@ -2,6 +2,7 @@
 
 use Braceyourself\Cvent\Exceptions\CventAuthorizationFailureException;
 use Braceyourself\Cvent\Exceptions\CventAuthorizationLockoutException;
+use Braceyourself\Cvent\Exceptions\InvalidObjectNameException;
 use Braceyourself\Cvent\Support\Filter;
 use Illuminate\Support\Arr;
 
@@ -483,4 +484,11 @@ class Cvent
         return $params;
     }
 
+
+    public static function validateObjectName($name)
+    {
+        if (!in_array($name, static::$objects)) {
+            throw new InvalidObjectNameException("'$name' is not a valid Cvent object");
+        }
+    }
 }
