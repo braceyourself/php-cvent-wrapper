@@ -54,7 +54,7 @@ class Cvent
 
         } catch (\SoapFault $fault) {
             /** @var \Exception $exception */
-            $exception = \Str::of($fault->getMessage())->lower()->studly()->ucfirst()
+            $exception = \Str::of($fault->getMessage())->lower()->studly()
                 ->prepend(__NAMESPACE__ . "\Exceptions\\")
                 ->append('Exception');
 
