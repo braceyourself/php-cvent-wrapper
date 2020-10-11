@@ -2,6 +2,7 @@
 
 use Braceyourself\Cvent\Exceptions\CventAuthorizationFailureException;
 use Braceyourself\Cvent\Exceptions\CventAuthorizationLockoutException;
+use Braceyourself\Cvent\Support\Filter;
 use Illuminate\Support\Arr;
 
 class Cvent
@@ -41,7 +42,7 @@ class Cvent
 
             }
 
-            return $this->client->__soapCall($method, $params);
+            return $this->client->__soapCall($method, $this->parseParams($params));
 
         } catch (\SoapFault $fault) {
             /** @var \Exception $exception */
@@ -452,6 +453,27 @@ class Cvent
             : [];
 
         return Arr::wrap($results);
+    }
+
+    private function parseParams($params): array
+    {
+        $key = 'Search.CvSearchObject.Filter';
+        $search = Arr::get($params, 'Search', []);
+
+        if (isset($search['CvSearchObject'])) {
+            $filters = collect(data_get($params, $key))->map(function ($filter) {
+                if ($filter instanceof Filter) {
+                    return $filter->toArray();
+                }
+
+                return $filter;
+            });
+
+            data_set($params, $key, $filters);
+        }
+
+
+        return $params;
     }
 
 }
