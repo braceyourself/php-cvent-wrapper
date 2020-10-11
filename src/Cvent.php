@@ -23,6 +23,7 @@ class Cvent
         'Event',
         'Survey',
         'Contact',
+        'Speaker',
         'Session',
         'eMarketing',
         'Administration',
