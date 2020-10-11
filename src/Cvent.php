@@ -17,6 +17,13 @@ class Cvent
         'exceptions' => TRUE,
         'trace'      => TRUE,
     ];
+    public static array $objects = [
+        'Contact',
+        'Event',
+        'Survey',
+        'eMarketing',
+        'Administration',
+    ];
 
 
     public function __construct($sandbox = false)
