@@ -469,7 +469,7 @@ class Cvent
                 return $filter;
             });
 
-            data_set($params, $key, $filters);
+            data_set($params, $key, $filters->toArray());
         }
 
 
