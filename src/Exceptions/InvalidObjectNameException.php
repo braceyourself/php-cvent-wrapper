@@ -1,6 +1,6 @@
 <?php namespace Braceyourself\Cvent\Exceptions;
 
-class InvalidObjectNameException
+class InvalidObjectNameException extends \Exception
 {
 
 }
