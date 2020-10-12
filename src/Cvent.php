@@ -73,7 +73,7 @@ class Cvent
                 $message .= 'Sent Request: ' . PHP_EOL . $this->client->__getLastRequest();
             }
 
-            if (class_exists($exception)) {
+            if (class_exists($exception) && in_array(\Throwable::class, class_implements($exception))) {
                 throw new $exception($message, $fault->getCode(), $fault);
             }
 
