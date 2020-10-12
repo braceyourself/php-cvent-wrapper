@@ -3,6 +3,7 @@
 use Braceyourself\Cvent\Exceptions\CventAuthorizationFailureException;
 use Braceyourself\Cvent\Exceptions\CventAuthorizationLockoutException;
 use Braceyourself\Cvent\Exceptions\InvalidObjectNameException;
+use Braceyourself\Cvent\Exceptions\InvalidSearchFilterException;
 use Braceyourself\Cvent\Support\Filter;
 use Illuminate\Support\Arr;
 
@@ -71,6 +72,10 @@ class Cvent
             if ($this->client) {
                 $message .= 'Sent Headers: ' . PHP_EOL . $this->client->__getLastRequestHeaders();
                 $message .= 'Sent Request: ' . PHP_EOL . $this->client->__getLastRequest();
+            }
+
+            if ($fault->getMessage() === 'INVALID_SEARCH_FILTER') {
+                throw new InvalidSearchFilterException($message, $fault->getCode(), $fault);
             }
 
             if (class_exists($exception) && in_array(\Throwable::class, class_implements($exception))) {
