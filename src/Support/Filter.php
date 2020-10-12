@@ -105,6 +105,10 @@ class Filter implements Arrayable
             return $this->value->utc()->setTimezone('GMT')->toDateTimeString();
         }
 
+        if ($this->value instanceof Arrayable) {
+            return $this->value->toArray();
+        }
+
         return $this->value;
     }
 
