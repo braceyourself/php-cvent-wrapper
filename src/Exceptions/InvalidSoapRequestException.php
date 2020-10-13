@@ -1,6 +1,6 @@
 <?php namespace Braceyourself\Cvent\Exceptions;
 
-class InvalidSoapRequest extends \Exception
+class InvalidSoapRequestException extends \Exception
 {
 
 }
