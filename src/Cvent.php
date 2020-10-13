@@ -6,6 +6,7 @@ use Braceyourself\Cvent\Exceptions\InvalidObjectNameException;
 use Braceyourself\Cvent\Exceptions\InvalidSearchFilterException;
 use Braceyourself\Cvent\Support\Filter;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class Cvent
 {
@@ -210,7 +211,7 @@ class Cvent
      *        associative array. Set to false to allow Registration Questions to
      *        provide an additional array of questions and answers within the
      *        primary record data array
-     * @return array associative array of results, with record Ids for keys
+     * @return Collection record Ids for keys
      * @throws \Exception
      */
     public function retrieve(string $object_type, $Ids, $Fields = ['Id'], $always_flat = TRUE)
@@ -231,7 +232,7 @@ class Cvent
 
         // normalize the API result as an array so we can process one or several
         // results the same way
-        $results = $this->normalizeResponse($results->RetrieveResult->CvObject);
+        return $this->normalizeResponse($results->RetrieveResult->CvObject);
 
         // build up the return assoc. array based on the fields we want back
         $return = [];
@@ -473,25 +474,23 @@ class Cvent
         return $fields;
     }
 
-    private function normalizeResponse($results = null)
+    private function normalizeResponse($data = null)
     {
-        $results = isset($results)
-            ? json_decode(json_encode($results), true)
-            : [];
+        return collect(json_decode(json_encode($data), true))->mapInto(Collection::class)
+            ->mapWithKeys(function (Collection $results) {
+                $results->each(function ($value, $key) use (&$results) {
+                    if (is_array($value)) {
+                        foreach ($value as $k => $v) {
+                            $results = $results->put($k, $v);
+                        }
 
-        $results = collect($results);
+                        $results = $results->forget($key);
+                    }
+                });
 
-        $results->each(function ($value, $key) use (&$results) {
-            if (is_array($value)) {
-                foreach ($value as $k => $v) {
-                    $results = $results->put($k, $v);
-                }
+                return [$results->get('Id') => $results];
+            });
 
-                $results = $results->forget($key);
-            }
-        });
-
-        return $results->toArray();
 
     }
 
