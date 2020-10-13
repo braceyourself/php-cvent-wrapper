@@ -474,23 +474,17 @@ class Cvent
         return $fields;
     }
 
-    private function normalizeResponse($data = null)
+    private function normalizeResponse($data = [])
     {
-        return collect(json_decode(json_encode($data), true))->mapInto(Collection::class)
-            ->mapWithKeys(function (Collection $results) {
-                $results->each(function ($value, $key) use (&$results) {
-                    if (is_array($value)) {
-                        foreach ($value as $k => $v) {
-                            $results = $results->put($k, $v);
-                        }
+        $data = collect(json_decode(json_encode($data), true))
+            ->mapInto(Collection::class)
+            ->get('CvObject');
 
-                        $results = $results->forget($key);
-                    }
-                });
+        if ($data->get('Id') !== null) {
+            $data = collect([$data]);
+        }
 
-                return [$results->get('Id') => $results];
-            });
-
+        return $data;
 
     }
 
