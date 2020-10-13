@@ -21,6 +21,17 @@ class Cvent
     ];
     public static array $objects = [
         'Guest',
+        'Invitee',
+        'Registration',
+        'EventParameters',
+        'EventDetail',
+        'EventEmailHistory',
+        'Transaction',
+        'Travel',
+        'Budget',
+        'BudgetItem',
+        'EventQuestion',
+        'TableAssignment',
         'Event',
         'Survey',
         'Contact',
