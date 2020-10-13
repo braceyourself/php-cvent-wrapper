@@ -476,10 +476,23 @@ class Cvent
     private function normalizeResponse($results = null)
     {
         $results = isset($results)
-            ? $results
+            ? json_decode(json_encode($results), true)
             : [];
 
-        return Arr::wrap($results);
+        $results = collect($results);
+
+        $results->each(function ($value, $key) use (&$results) {
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $results = $results->put($k, $v);
+                }
+
+                $results = $results->forget($key);
+            }
+        });
+
+        return $results->toArray();
+
     }
 
     private function parseParams($params): array
