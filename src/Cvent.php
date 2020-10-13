@@ -232,7 +232,7 @@ class Cvent
 
         // normalize the API result as an array so we can process one or several
         // results the same way
-        return $this->normalizeResponse($results->RetrieveResult->CvObject);
+        return $this->normalizeResponse($results->RetrieveResult);
 
         // build up the return assoc. array based on the fields we want back
         $return = [];
